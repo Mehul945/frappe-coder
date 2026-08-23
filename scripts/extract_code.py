@@ -32,9 +32,10 @@ def build_rows(raw_dir: Path):
 
 
 def format_source_example(repo: str, relative: Path, text: str) -> str:
+    normalized_path = str(relative).replace("\\", "/")
     return (
         f"Repository: {repo}\n"
-        f"Path: {str(relative).replace('\\', '/')}\n\n"
+        f"Path: {normalized_path}\n\n"
         "```text\n"
         f"{text}\n"
         "```"
@@ -54,4 +55,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
