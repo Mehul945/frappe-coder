@@ -1,0 +1,46 @@
+model_name: Qwen/Qwen3-4B-Base
+train_file: data/processed/train.jsonl
+output_dir: checkpoints/frappecoder-4b-pilot
+
+max_seq_length: 4096
+# Long examples are split on token boundaries. Small examples are combined by packing.
+# Leave a little context headroom for EOS/template tokens added by the trainer.
+chunk_size: 4000
+min_chunk_tokens: 1000
+packing: true
+
+# Automatically continue from the highest valid checkpoint in output_dir.
+resume_from_checkpoint: auto
+
+num_train_epochs: 1
+max_steps: 500
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 16
+learning_rate: 0.0001
+warmup_ratio: 0.05
+lr_scheduler_type: cosine
+logging_steps: 10
+save_steps: 100
+eval_steps: 100
+save_total_limit: 5
+
+bf16: true
+gradient_checkpointing: true
+optim: paged_adamw_8bit
+
+load_in_4bit: true
+bnb_4bit_quant_type: nf4
+bnb_4bit_compute_dtype: bfloat16
+bnb_4bit_use_double_quant: true
+
+lora_r: 32
+lora_alpha: 64
+lora_dropout: 0.05
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj

@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.env
+
+data/raw/
+data/processed/*.jsonl
+data/eval/*answers*.jsonl
+checkpoints/
+wandb/
+runs/
+

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "frappe-whitelisted-leave-balance",
+    "category": "hrms",
+    "prompt": "Create a Frappe whitelisted API that returns an employee's current leave balance. Mention permissions, DocTypes, and expected return shape.",
+    "rubric": [
+      "Uses frappe.whitelist",
+      "Identifies Employee and Leave Allocation or HRMS leave ledger concepts",
+      "Does not bypass permissions casually",
+      "Returns structured JSON-like data"
+    ]
+  },
+  {
+    "id": "sales-invoice-credit-limit-validation",
+    "category": "erpnext",
+    "prompt": "Prevent Sales Invoice submission when outstanding amount exceeds the customer's credit limit. Explain where the validation belongs and what tests should be added.",
+    "rubric": [
+      "Uses the Sales Invoice controller or validation hook appropriately",
+      "Considers customer credit limit fields and outstanding exposure",
+      "Raises a Frappe validation error",
+      "Includes tests for allowed and blocked submission"
+    ]
+  },
+  {
+    "id": "frappe-patch-add-field",
+    "category": "migration",
+    "prompt": "Write the outline for a Frappe patch that adds a custom field to Employee and is safe to rerun.",
+    "rubric": [
+      "Uses frappe.get_doc or create_custom_fields",
+      "Checks for existing field before creating",
+      "Mentions hooks/patches.txt",
+      "Commits or explains migration behavior"
+    ]
+  }
+]
+
