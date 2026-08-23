@@ -30,6 +30,18 @@ Install dependencies in a Lightning Studio or local Python environment:
 pip install -r requirements.txt
 ```
 
+Run the entire pipeline—repository sync, extraction, dataset creation, token
+statistics, and resumable training—with one command:
+
+```bash
+chmod +x run_training.sh
+./run_training.sh
+```
+
+On later runs, the same command resumes the newest checkpoint automatically. Use
+`./run_training.sh --skip-clone` to avoid syncing source repositories, or
+`./run_training.sh --fresh` to intentionally start training without a checkpoint.
+
 Clone the core repositories:
 
 ```bash

@@ -32,6 +32,19 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
+    missing = [path for path in args.inputs if not path.exists()]
+    if missing:
+        missing_list = "\n".join(f"  - {path}" for path in missing)
+        raise SystemExit(
+            "Missing input JSONL file(s):\n"
+            f"{missing_list}\n\n"
+            "Run the extraction steps first, for example:\n"
+            "  python scripts/clone_repos.py\n"
+            "  python scripts/extract_code.py\n"
+            "  python scripts/extract_docs.py\n"
+            "  python scripts/build_task_dataset.py"
+        )
+
     count = write_jsonl(args.output, dedupe(args.inputs))
     print(f"Wrote {count} deduplicated rows to {args.output}")
 
