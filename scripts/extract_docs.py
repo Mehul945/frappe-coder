@@ -24,16 +24,17 @@ def build_rows(raw_dir: Path):
             text = read_text(path)
             if len(text) < 120:
                 continue
+            normalized_path = str(relative).replace("\\", "/")
             yield {
                 "id": stable_hash(f"docs:{repo}:{relative}:{text}"),
                 "text": (
                     f"Repository: {repo}\n"
-                    f"Documentation path: {str(relative).replace('\\', '/')}\n\n"
+                    f"Documentation path: {normalized_path}\n\n"
                     f"{text}"
                 ),
                 "meta": {
                     "repo": repo,
-                    "path": str(relative).replace("\\", "/"),
+                    "path": normalized_path,
                     "domain": domain_for(repo, relative),
                     "language": "markdown",
                     "type": "documentation",
@@ -55,4 +56,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
