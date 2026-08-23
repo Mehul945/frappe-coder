@@ -4,6 +4,7 @@ import argparse
 import inspect
 from pathlib import Path
 import re
+import shutil
 
 import yaml
 
@@ -43,6 +44,20 @@ def resolve_resume_checkpoint(value, output_dir: str | Path) -> Path | None:
     return path
 
 
+def configure_torch_native_fallback(torch) -> None:
+    """Avoid Triton JIT failures on minimal GPU images without a C compiler."""
+    if any(shutil.which(compiler) for compiler in ("cc", "gcc", "clang")):
+        return
+
+    try:
+        from torch._native.registry import deregister_op_overrides
+    except (ImportError, ModuleNotFoundError):
+        return
+
+    deregister_op_overrides(disable_op_symbols="bmm")
+    print("No C compiler found; using the ATen CUDA bmm implementation instead of the Triton override.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="QLoRA train FrappeCoder.")
     parser.add_argument("--config", type=Path, default=Path("training/config.yaml"))
@@ -60,6 +75,8 @@ def main() -> None:
     from peft import LoraConfig, prepare_model_for_kbit_training
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, TrainingArguments
     from trl import SFTTrainer
+
+    configure_torch_native_fallback(torch)
 
     dtype_map = {
         "bfloat16": torch.bfloat16,
